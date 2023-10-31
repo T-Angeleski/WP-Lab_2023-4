@@ -7,8 +7,12 @@
     <title>Movie Ticket Order page - Welcome and choose a Movie</title>
     <style type="text/css">
         body {
-            width: 800px;
+            width: 1080px;
             margin: auto;
+        }
+
+        .container {
+            display: flex;
         }
     </style>
 </head>
@@ -17,26 +21,46 @@
     <h1>Welcome to our Movie Ticket Shop App</h1>
 </header>
 <main>
-    <h2>Choose movie:</h2>
-    <!-- Display radio buttons for each movie,
-            the value should be the movie title
-            and the displayed text should be Title: <movie_title>, Summary:<movie_summary>, Rating: <movie_rating> -->
-    <form th:method="POST" th:action="@{/ticketOrder}">
-        <div th:each="movie : ${movies}">
-            <input type="radio" th:name="selected-movie"
-                   th:value="${movie.getTitle()}">
-            <label th:for="${movie.getTitle()}"
-                   th:text="'Title: ' + ${movie.getTitle()} +
+    <div class="container">
+        <div>
+            <h2>Choose movie:</h2>
+            <!-- Display radio buttons for each movie,
+                    the value should be the movie title
+                    and the displayed text should be Title: <movie_title>, Summary:<movie_summary>, Rating: <movie_rating> -->
+            <form th:method="POST" th:action="@{/ticketOrder}">
+                <div th:each="movie : ${movies}">
+                    <input type="radio" th:name="selected-movie"
+                           th:value="${movie.getTitle()}">
+                    <label th:for="selected-movie"
+                           th:text="'Title: ' + ${movie.getTitle()} +
                     ', Summary:' + ${movie.getSummary()} +
                     ', Rating: ' + ${movie.getRating()}"></label>
+                </div>
+
+
+                <h2>Choose number of tickets:</h2>
+                <input type="number" name="numTickets" min="1" max="10"><br/>
+                <br/>
+                <input type="submit" value="Submit">
+            </form>
         </div>
+        <div>
+            <form method="get" action="">
+                <h2>Search movies by title and rating</h2>
+                <label for="search-text">Enter title</label>
+                <input type="text" name="search-text" id="search-text" value="">
+                <label for="rating">Enter rating</label>
+                <input type="number" min="1" max="10" id="rating" name="search-rating" value="1">
 
-
-        <h2>Choose number of tickets:</h2>
-        <input type="number" name="numTickets" min="1" max="10"><br/>
-        <br/>
-        <input type="submit" value="Submit">
-    </form>
+                <input type="submit" value="Search">
+            </form>
+            <hr>
+            <h2>Result:</h2>
+            <ul th:each="movie : ${searchedMovies}">
+                <li th:text="${movie.getTitle()} + ' ' + ${movie.getRating()}"></li>
+            </ul>
+        </div>
+    </div>
 
 </main>
 </body>

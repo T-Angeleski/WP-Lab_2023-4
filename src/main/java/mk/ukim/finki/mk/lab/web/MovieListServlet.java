@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import mk.ukim.finki.mk.lab.model.Movie;
 import mk.ukim.finki.mk.lab.service.MovieService;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -13,6 +14,7 @@ import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(urlPatterns = "")
 public class MovieListServlet extends HttpServlet {
@@ -34,11 +36,18 @@ public class MovieListServlet extends HttpServlet {
 
         context.setVariable("movies", movieService.listAll());
 
+
+        // Search
+        String searchText = req.getParameter("search-text");
+        String searchRating = req.getParameter("search-rating");
+        double rating = searchRating == null ? 0 : Double.parseDouble(searchRating);
+        List<Movie> moviesSearched = movieService.searchByTitleAndRating(searchText, rating);
+        context.setVariable("searchedMovies", moviesSearched);
+
         springTemplateEngine.process(
                 "listMovies.html",
                 context, resp.getWriter());
 
-        // TODO: SEARCH MOVIES
     }
 
     @Override
@@ -48,9 +57,9 @@ public class MovieListServlet extends HttpServlet {
 //
 //        req.setAttribute("selected-movie", selectedMovie);
 //        req.setAttribute("num-tickets", numTickets);
-//
-//        RequestDispatcher dispatcher = req.getRequestDispatcher("/ticketOrder");
-//        dispatcher.forward(req, resp);
+////        req.getRequestDispatcher("/ticketOrder")
+////                .forward(req, resp);
+//        resp.sendRedirect("/ticketOrder");
 
     }
 }

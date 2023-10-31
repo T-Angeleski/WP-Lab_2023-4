@@ -24,7 +24,7 @@ public class MovieRepository {
                     String title = String.format("Movie name #%d", i+1);
                     String summary = String.format("Movie #%d summary", i+1);
 
-                    double rating = 1 + random.nextDouble() * 4;
+                    double rating = 1 + random.nextDouble() * 9;
                     // Round down to 2 decimal
                     rating = rating*100;
                     rating = Math.round(rating);
