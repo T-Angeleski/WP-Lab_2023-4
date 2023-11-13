@@ -37,7 +37,7 @@ public class TicketOrderServlet extends HttpServlet {
         TicketOrder order = ticketOrderService.placeOrder(movie,
                 "Teodor Angeleski",
                 req.getRemoteAddr(),
-                Integer.parseInt(tickets));
+                Long.parseLong(tickets));
 
         context.setVariable("order", order);
 

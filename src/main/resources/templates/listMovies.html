@@ -59,6 +59,13 @@
             <ul th:each="movie : ${searchedMovies}">
                 <li th:text="${movie.getTitle()} + ' ' + ${movie.getRating()}"></li>
             </ul>
+
+            <hr>
+            <div th:if="${mostPopularMovie != null}">
+                <h2>Most popular movie:</h2>
+                <p th:text="${mostPopularMovie.getKey()} + ', tickets: ' +
+                            ${mostPopularMovie.getValue()}"></p>
+            </div>
         </div>
     </div>
 
