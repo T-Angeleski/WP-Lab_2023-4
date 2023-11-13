@@ -1,40 +1,31 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
->
-<head>
-    <meta charset="utf-8">
-    <title>Movie Ticket Order page - Welcome and choose a Movie</title>
-    <style type="text/css">
-        body {
-            width: 1080px;
-            margin: auto;
-        }
-
-        .container {
-            display: flex;
-        }
-    </style>
-</head>
-<body>
-<header>
-    <h1>Welcome to our Movie Ticket Shop App</h1>
-</header>
-<main>
-    <div class="container">
+<div xmlns:th="http://www.thymeleaf.org">
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h1 class="jumbotron-heading">All movies</h1>
+            </div>
+        </section>
+    <div class="container" style="display: flex">
         <div>
             <h2>Choose movie:</h2>
-            <!-- Display radio buttons for each movie,
-                    the value should be the movie title
-                    and the displayed text should be Title: <movie_title>, Summary:<movie_summary>, Rating: <movie_rating> -->
             <form th:method="POST" th:action="@{/ticketOrder}">
                 <div th:each="movie : ${movies}">
                     <input type="radio" th:name="selected-movie"
                            th:value="${movie.getTitle()}">
                     <label th:for="selected-movie"
-                           th:text="'Title: ' + ${movie.getTitle()} +
-                    ', Summary:' + ${movie.getSummary()} +
-                    ', Rating: ' + ${movie.getRating()}"></label>
+                           th:text="${movie}">
+                    </label> <br>
+                    <th:block th:text="'Production: ' + ${movie.getProduction()}"></th:block> <br>
+
+                    <th:block>
+                        <a th:href="@{'/movies/delete/{id}' (id=${movie.getId()})}">
+                            <i>DELETE</i>
+                        </a>
+                    </th:block> ||
+                    <th:block>
+                        <a th:href="@{'/movies/edit/{id}' (id=${movie.getId()})}">
+                            <i>EDIT</i>
+                        </a>
+                    </th:block>
                 </div>
 
 
@@ -48,9 +39,9 @@
             <form method="get" action="">
                 <h2>Search movies by title and rating</h2>
                 <label for="search-text">Enter title</label>
-                <input type="text" name="search-text" id="search-text" value="">
+                <input type="text" name="searchText" id="search-text" value="">
                 <label for="rating">Enter rating</label>
-                <input type="number" min="1" max="10" id="rating" name="search-rating" value="1">
+                <input type="number" min="1" max="10" id="rating" name="searchRating" value="1">
 
                 <input type="submit" value="Search">
             </form>
@@ -66,9 +57,13 @@
                 <p th:text="${mostPopularMovie.getKey()} + ', tickets: ' +
                             ${mostPopularMovie.getValue()}"></p>
             </div>
-        </div>
-    </div>
 
-</main>
-</body>
-</html>
+            <div>
+                <button>
+                    <a href="/movies/add">Add new movie</a>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-@Service
 public interface TicketOrderService {
     TicketOrder placeOrder(String movieTitle, String clientName, String address, long numberOfTickets);
     List<TicketOrder> findAll();

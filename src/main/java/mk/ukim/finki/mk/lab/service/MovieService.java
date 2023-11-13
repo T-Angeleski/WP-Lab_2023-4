@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface MovieService {
     List<Movie> listAll();
     List<Movie> searchMovies(String text);
     List<Movie> searchByTitleAndRating(String title, double rating);
+    Movie findById(Long id);
 }

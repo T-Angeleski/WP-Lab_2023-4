@@ -1,12 +1,14 @@
 package mk.ukim.finki.mk.lab.service.impl;
 
 import mk.ukim.finki.mk.lab.model.Movie;
+import mk.ukim.finki.mk.lab.model.exceptions.MovieNotFoundException;
 import mk.ukim.finki.mk.lab.repository.MovieRepository;
 import mk.ukim.finki.mk.lab.service.MovieService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,5 +41,14 @@ public class MovieServiceImpl implements MovieService {
                 .filter(movie -> movie.getTitle().contains(title) &&
                         movie.getRating() >= rating)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Movie findById(Long id) {
+        Optional<Movie> movie = movieRepository.findById(id);
+        if(movie.isEmpty()) {
+            throw new MovieNotFoundException("Movie by id not found");
+        }
+        return movie.get();
     }
 }
