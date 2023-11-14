@@ -8,6 +8,7 @@ import java.util.Map;
 
 public interface TicketOrderService {
     TicketOrder placeOrder(String movieTitle, String clientName, String address, long numberOfTickets);
+
     List<TicketOrder> findAll();
 
     Map.Entry<String, Long> findMostPopular();

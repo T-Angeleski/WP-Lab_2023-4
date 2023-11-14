@@ -58,15 +58,24 @@ public class MovieRepository {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Movie> save(String movieTitle, String summary, double rating, Production production) {
+    public void deleteById(Long id) {
+        movies.removeIf(m -> m.getId().equals(id));
+    }
+
+    public Optional<Movie> save(String movieTitle, String summary, double rating,
+                                Production production, Long movieId) {
         if (production == null) {
             throw new IllegalArgumentException();
         }
         Movie movie = new Movie(movieTitle, summary, rating);
         movie.setProduction(production);
-        movie.setId(production.getId());
 
-        movies.removeIf(m -> m.getTitle().equals(movie.getTitle()));
+        // For new movies
+        if (movieId != 0) {
+            movie.setId(movieId);
+        }
+
+        movies.removeIf(m -> m.getId().equals(movie.getId()));
         movies.add(movie);
 
         return Optional.of(movie);

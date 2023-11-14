@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.Optional;
 
 @Repository
 public class ProductionRepository {
@@ -25,4 +25,11 @@ public class ProductionRepository {
     public List<Production> findAll() {
         return productions;
     }
+    public Optional<Production> findById(Long id) {
+        return productions
+                .stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst();
+    }
+
 }

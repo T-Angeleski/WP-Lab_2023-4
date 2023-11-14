@@ -60,7 +60,13 @@ public class MovieController {
     }
 
     @PostMapping("/add")
-    public String saveMovie() {
+    public String saveMovie(@RequestParam String movieTitle,
+                            @RequestParam String movieSummary,
+                            @RequestParam Double movieRating,
+                            @RequestParam String productionId,
+                            @RequestParam String id) {
+        this.movieService.save(movieTitle, movieSummary, movieRating,
+                Long.valueOf(productionId), Long.valueOf(id));
         return "redirect:/movies";
     }
 
@@ -77,8 +83,9 @@ public class MovieController {
         return "redirect:/movies";
     }
 
-    @PostMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteMovie(@PathVariable Long id) {
+        movieService.deleteById(id);
         return "redirect:/movies";
     }
 }

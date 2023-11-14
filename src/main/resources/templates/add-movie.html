@@ -10,7 +10,7 @@
       <div class="col-md-5">
         <form action="/movies/add" method="POST">
           <input id="id" type="hidden" name="id"
-                 th:value="(${movie} != null ? ${movie.getId()} : '')">
+                 th:value="(${movie} != null ? ${movie.getId()} : '0')">
           <div class="form-group">
             <label for="title">Movie title</label>
             <input type="text"
@@ -41,7 +41,7 @@
           </div>
           <div class="form-group">
             <label>Production</label>
-            <select name="category" class="form-control">
+            <select name="productionId" class="form-control">
               <option th:if="${movie} != null"
                       th:selected="${movie.getProduction() != null &&
                                 movie.getProduction().getId() == prod.getId()}"

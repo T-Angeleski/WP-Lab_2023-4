@@ -9,8 +9,8 @@
             <h2>Choose movie:</h2>
             <form th:method="POST" th:action="@{/ticketOrder}">
                 <div th:each="movie : ${movies}">
-                    <input type="radio" th:name="selected-movie"
-                           th:value="${movie.getTitle()}">
+                    <input type="radio" th:name="selectedMovie"
+                           th:value="${movie.getTitle()}" required>
                     <label th:for="selected-movie"
                            th:text="${movie}">
                     </label> <br>

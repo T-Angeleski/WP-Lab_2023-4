@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(urlPatterns = "")
+@WebServlet(urlPatterns = "/servlet/movies")
 @AllArgsConstructor
 public class MovieListServlet extends HttpServlet {
 
