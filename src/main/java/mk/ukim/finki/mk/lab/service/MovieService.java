@@ -13,7 +13,7 @@ public interface MovieService {
 
     List<Movie> searchByTitleAndRating(String title, double rating);
 
-    Movie findById(Long id);
+    Optional<Movie> findById(Long id);
 
     Optional<Movie> save(String title, String summary, Double rating, Long productionId, Long movieId);
 

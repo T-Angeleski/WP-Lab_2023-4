@@ -49,12 +49,10 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie findById(Long id) {
+    public Optional<Movie> findById(Long id) {
         Optional<Movie> movie = movieRepository.findById(id);
-        if (movie.isEmpty()) {
-            throw new MovieNotFoundException(id);
-        }
-        return movie.get();
+
+        return movie;
     }
 
     @Override

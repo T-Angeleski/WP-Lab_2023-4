@@ -1,69 +1,106 @@
-<div xmlns:th="http://www.thymeleaf.org">
-        <section class="jumbotron text-center">
-            <div class="container">
-                <h1 class="jumbotron-heading">All movies</h1>
-            </div>
-        </section>
-    <div class="container" style="display: flex">
-        <div>
-            <h2>Choose movie:</h2>
-            <form th:method="POST" th:action="@{/ticketOrder}">
-                <div th:each="movie : ${movies}">
-                    <input type="radio" th:name="selectedMovie"
-                           th:value="${movie.getTitle()}" required>
-                    <label th:for="selected-movie"
-                           th:text="${movie}">
-                    </label> <br>
-                    <th:block th:text="'Production: ' + ${movie.getProduction()}"></th:block> <br>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket Order</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyEQBf6kLJt1PZxlUAelK9PJFhWQ2"
+          crossorigin="anonymous">
+    <style>
+        .movie-section,
+        .search-section {
+            margin-top: 20px;
+        }
 
-                    <th:block>
-                        <a th:href="@{'/movies/delete/{id}' (id=${movie.getId()})}">
-                            <i>DELETE</i>
-                        </a>
-                    </th:block> ||
-                    <th:block>
-                        <a th:href="@{'/movies/edit/{id}' (id=${movie.getId()})}">
-                            <i>EDIT</i>
-                        </a>
-                    </th:block>
+        .movie-item {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-4">
+    <div class="row movie-section">
+        <!-- Movie Selection Section -->
+        <div class="col-md-12">
+            <h2>Choose a Movie:</h2>
+            <th:block th:if="${hasError} != null">
+                <p class="text-danger" th:text="${error}"></p>
+            </th:block>
+            <form th:method="POST" th:action="@{/ticketOrder}">
+                <div class="row">
+                    <div th:each="movie : ${movies}" class="col-md-4 movie-item">
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" th:name="selectedMovie"
+                                   th:value="${movie.getTitle()}" required>
+                            <label class="form-check-label" th:for="selected-movie"
+                                   th:text="${movie.getTitle()}"></label>
+                            <p class="text-muted" th:text="'Production: ' + ${movie.getProduction()}"></p>
+
+                            <div class="btn-group">
+                                <a th:href="@{'/movies/delete/' + ${movie.getId()}}"
+                                   class="btn btn-sm btn-danger">DELETE</a>
+                                <a th:href="@{'/movies/edit-form/' + ${movie.getId()}}"
+                                   class="btn btn-sm btn-primary">EDIT</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="display: flex; justify-content: space-around">
+                    <div class="col-md-4">
+                        <h2>Choose Number of Tickets:</h2>
+                        <input type="number" name="numTickets" class="form-control" min="1" max="10">
+                        <br/>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    <div class="mt-6">
+                        <a href="/movies/add-form" class="btn btn-success">Add New Movie</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Search and Most Popular Movie Section -->
+    <div class="row search-section">
+        <div class="col-md-6">
+            <form method="get" action="">
+                <h2>Search Movies by Title and Rating</h2>
+                <div class="form-group">
+                    <label for="search-text">Enter Title</label>
+                    <input type="text" name="searchText" id="search-text" class="form-control" value="">
                 </div>
 
+                <div class="form-group">
+                    <label for="rating">Enter Rating</label>
+                    <input type="number" min="1" max="10" id="rating" name="searchRating" class="form-control"
+                           value="1">
+                </div>
 
-                <h2>Choose number of tickets:</h2>
-                <input type="number" name="numTickets" min="1" max="10"><br/>
-                <br/>
-                <input type="submit" value="Submit">
+                <input type="submit" class="btn btn-primary" value="Search">
             </form>
-        </div>
-        <div>
-            <form method="get" action="">
-                <h2>Search movies by title and rating</h2>
-                <label for="search-text">Enter title</label>
-                <input type="text" name="searchText" id="search-text" value="">
-                <label for="rating">Enter rating</label>
-                <input type="number" min="1" max="10" id="rating" name="searchRating" value="1">
 
-                <input type="submit" value="Search">
-            </form>
             <hr>
+
             <h2>Result:</h2>
-            <ul th:each="movie : ${searchedMovies}">
+            <ul class="list-unstyled" th:each="movie : ${searchedMovies}">
                 <li th:text="${movie.getTitle()} + ' ' + ${movie.getRating()}"></li>
             </ul>
-
-            <hr>
-            <div th:if="${mostPopularMovie != null}">
-                <h2>Most popular movie:</h2>
-                <p th:text="${mostPopularMovie.getKey()} + ', tickets: ' +
-                            ${mostPopularMovie.getValue()}"></p>
-            </div>
-
-            <div>
-                <button>
-                    <a href="/movies/add">Add new movie</a>
-                </button>
-            </div>
         </div>
 
+        <div class="col-md-6">
+            <hr>
+
+            <div th:if="${mostPopularMovie != null}">
+                <h2>Most Popular Movie:</h2>
+                <p th:text="${mostPopularMovie.getKey()} + ', Tickets: ' + ${mostPopularMovie.getValue()}"></p>
+            </div>
+
+        </div>
     </div>
 </div>
+
+</body>
+</html>

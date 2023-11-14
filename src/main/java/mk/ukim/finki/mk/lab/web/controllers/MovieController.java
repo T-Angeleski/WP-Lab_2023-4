@@ -51,8 +51,8 @@ public class MovieController {
         return "master-template";
     }
 
-    @GetMapping("/add")
-    public String addMoviePage(Model model) {
+    @GetMapping("/add-form")
+    public String getAddMoviePage(Model model) {
         List<Production> productions = productionService.findAll();
         model.addAttribute("productions", productions);
         model.addAttribute("bodyContent", "add-movie");
@@ -70,17 +70,17 @@ public class MovieController {
         return "redirect:/movies";
     }
 
-    @GetMapping("/edit/{movieId}")
+    @GetMapping("/edit-form/{movieId}")
     public String editMovie(@PathVariable Long movieId, Model model) {
-        if(movieService.findById(movieId) != null) {
-            Movie movie = movieService.findById(movieId);
+        if(movieService.findById(movieId).isPresent()) {
+            Movie movie = movieService.findById(movieId).get();
             List<Production> productions = productionService.findAll();
             model.addAttribute("productions", productions);
             model.addAttribute("movie", movie);
             model.addAttribute("bodyContent", "add-movie");
             return "master-template";
         }
-        return "redirect:/movies";
+        return "redirect:/movies?error=MovieNotFound";
     }
 
     @GetMapping("/delete/{id}")
