@@ -18,4 +18,6 @@ public interface MovieService {
     Optional<Movie> save(String title, String summary, Double rating, Long productionId, Long movieId);
 
     void deleteById(Long id);
+
+    void findMovieAndSetNewRating(String title, Double rating);
 }

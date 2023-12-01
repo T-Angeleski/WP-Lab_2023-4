@@ -8,4 +8,7 @@ public class MovieNotFoundException extends RuntimeException{
     public MovieNotFoundException(Long id) {
         super(String.format("Movie with id %d was not found", id));
     }
+    public MovieNotFoundException(String title) {
+        super(String.format("Movie with title %s was not found", title));
+    }
 }

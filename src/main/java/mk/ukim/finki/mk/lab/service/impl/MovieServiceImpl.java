@@ -66,4 +66,9 @@ public class MovieServiceImpl implements MovieService {
     public void deleteById(Long id) {
         movieRepository.deleteById(id);
     }
+
+    @Override
+    public void findMovieAndSetNewRating(String title, Double rating) {
+        movieRepository.setRatingForMovie(title, rating);
+    }
 }

@@ -1,56 +1,85 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <title>Ordered Ticket - Confirmation</title>
-    <style type="text/css">
-        body {
-            width: 800px;
-            margin: auto;
-        }
+<div lang="en" xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <title>Ordered Ticket - Confirmation</title>
+        <style type="text/css">
+            body {
+                width: 800px;
+                margin: auto;
+            }
 
-        table {
-            width: 100%;
-        }
+            table {
+                width: 100%;
+            }
 
-        table, td, th {
-            border: 1px solid black;
-            padding: 3px 2px;
-        }
-    </style>
-</head>
-<body>
-<section>
-    <header>
-        <h1>Movie Order page - Order confirmation </h1>
-    </header>
-    <table>
-        <tr>
-            <th colspan="2">
-                Your Order Status
-            </th>
-        </tr>
-        <tr>
-            <td><b>Client Name </b></td>
-            <td th:text="${order.getClientName()}"></td>
-        </tr>
-        <tr>
-            <td><b>Client IP Address</b></td>
-            <td th:text="${order.getClientAddress()}"></td>
-        </tr>
-        <tr>
-            <td><b>Ticket for Movie</b></td>
-            <td th:text="${order.getMovieTitle()}"></td>
-        </tr>
-        <tr>
-            <td><b>Number of tickets</b></td>
-            <td th:text="${order.getNumberOfTickets()}"></td>
-        </tr>
-    </table>
+            table, td, th {
+                border: 1px solid black;
+                padding: 3px 2px;
+            }
+        </style>
+    </head>
+    <body>
+    <section>
+        <header>
+            <h1>Movie Order page - Order confirmation </h1>
+        </header>
+        <table>
+            <tr>
+                <th colspan="2">
+                    Your Order Status
+                </th>
+            </tr>
+            <tr>
+                <td><b>Client Name </b></td>
+                <td th:text="${order.getClientName()}"></td>
+            </tr>
+            <tr>
+                <td><b>Client IP Address</b></td>
+                <td th:text="${order.getClientAddress()}"></td>
+            </tr>
+            <tr>
+                <td><b>Ticket for Movie</b></td>
+                <td th:text="${order.getMovieTitle()}"></td>
+            </tr>
+            <tr>
+                <td><b>Number of tickets</b></td>
+                <td th:text="${order.getNumberOfTickets()}"></td>
+            </tr>
+        </table>
 
-    <h2> Place another order </h2>
-    <a th:href="@{/movies}">Go back</a>
-</section>
-</body>
-</html>
+        <div style="display:flex; justify-content: space-around">
+            <div>
+                <h2> Place another order </h2>
+                <a th:href="@{/movies}">Go back</a>
+            </div>
+            <div>
+                <form method="post" action="/ticketOrder/editRating">
+                    <h2>All movies ordered</h2>
+
+                    <ul th:each="movie : ${movies}">
+
+                        <li>
+                            <label>
+
+                                <input type="radio" name="movieTitle" th:value="${movie.getTitle()}" required>
+                                <span th:text="${movie.getTitle()}"></span>
+                                <span th:text=" ${movie.getRating()}"></span><br>
+                            </label>
+                        </li>
+
+
+                    </ul>
+                    <label for="rating">New rating</label>
+                    <input type="number" name="rating" min="1" max="10" id="rating" step="any">
+                    <br>
+                    <button type="submit">Enter new rating for movie</button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </section>
+    </body>
+</div>

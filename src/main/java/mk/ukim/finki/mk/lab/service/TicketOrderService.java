@@ -1,5 +1,6 @@
 package mk.ukim.finki.mk.lab.service;
 
+import mk.ukim.finki.mk.lab.model.Movie;
 import mk.ukim.finki.mk.lab.model.TicketOrder;
 import org.springframework.stereotype.Service;
 
@@ -13,4 +14,5 @@ public interface TicketOrderService {
 
     Map.Entry<String, Long> findMostPopular();
 
+    List<Movie> findClientOrders(String clientName);
 }

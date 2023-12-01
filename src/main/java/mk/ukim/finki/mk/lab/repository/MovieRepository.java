@@ -51,6 +51,12 @@ public class MovieRepository {
                 .findFirst();
     }
 
+    public Optional<Movie> findByTitle(String title) {
+        return movies.stream()
+                .filter(m -> m.getTitle().equals(title))
+                .findFirst();
+    }
+
     public List<Movie> searchMovies(String text) {
         return movies.stream()
                 .filter(movie -> movie.getTitle().contains(text) ||
@@ -81,4 +87,11 @@ public class MovieRepository {
         return Optional.of(movie);
     }
 
+    public void setRatingForMovie(String title, Double rating) {
+        Movie movie = findByTitle(title).get();
+        movie.setRating(rating);
+
+        movies.removeIf(m -> m.getId().equals(movie.getId()));
+        movies.add(movie);
+    }
 }

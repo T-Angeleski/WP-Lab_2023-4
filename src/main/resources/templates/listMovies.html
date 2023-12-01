@@ -37,6 +37,7 @@
                                    th:value="${movie.getTitle()}" required>
                             <label class="form-check-label" th:for="selected-movie"
                                    th:text="${movie.getTitle()}"></label>
+                            <span th:text="'Rating: ' + ${movie.getRating()}"></span>
                             <p class="text-muted" th:text="'Production: ' + ${movie.getProduction()}"></p>
 
                             <div class="btn-group">
