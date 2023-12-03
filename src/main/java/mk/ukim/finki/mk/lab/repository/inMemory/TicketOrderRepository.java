@@ -1,4 +1,4 @@
-package mk.ukim.finki.mk.lab.repository;
+package mk.ukim.finki.mk.lab.repository.inMemory;
 
 import jakarta.annotation.PostConstruct;
 import mk.ukim.finki.mk.lab.model.Movie;
@@ -34,15 +34,15 @@ public class TicketOrderRepository {
         ticketsByName.putIfAbsent(order.getMovieTitle(), order.getNumberOfTickets());
 
         // Add ordered movie to client name
-        String movieTitle = order.getMovieTitle();
-        moviesByClientName.computeIfPresent(order.getClientName(),
-                (k,v) -> {
-                    v.removeIf(m -> m.equals(movieTitle));
-                    v.add(movieTitle);
-                    return v;
-                });
-        moviesByClientName.putIfAbsent(order.getClientName(),
-                new ArrayList<>());
+//        String movieTitle = order.getMovieTitle();
+//        moviesByClientName.computeIfPresent(order.getClientName(),
+//                (k,v) -> {
+//                    v.removeIf(m -> m.equals(movieTitle));
+//                    v.add(movieTitle);
+//                    return v;
+//                });
+//        moviesByClientName.putIfAbsent(order.getClientName(),
+//                new ArrayList<>());
 //        moviesByClientName.get(order.getClientName()).add(movieTitle);
 
         return order;

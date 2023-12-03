@@ -2,10 +2,9 @@ package mk.ukim.finki.mk.lab.service.impl;
 
 import mk.ukim.finki.mk.lab.model.Movie;
 import mk.ukim.finki.mk.lab.model.Production;
-import mk.ukim.finki.mk.lab.model.exceptions.MovieNotFoundException;
 import mk.ukim.finki.mk.lab.model.exceptions.ProductionNotFoundException;
-import mk.ukim.finki.mk.lab.repository.MovieRepository;
-import mk.ukim.finki.mk.lab.repository.ProductionRepository;
+import mk.ukim.finki.mk.lab.repository.jpa.JpaMovieRepository;
+import mk.ukim.finki.mk.lab.repository.jpa.JpaProductionRepository;
 import mk.ukim.finki.mk.lab.service.MovieService;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +16,14 @@ import java.util.stream.Collectors;
 @Service
 public class MovieServiceImpl implements MovieService {
 
-    private final MovieRepository movieRepository;
-    private final ProductionRepository productionRepository;
+    private final JpaMovieRepository movieRepository;
+    private final JpaProductionRepository productionRepository;
 
-    public MovieServiceImpl(MovieRepository movieRepository, ProductionRepository productionRepository) {
+    public MovieServiceImpl(JpaMovieRepository movieRepository, JpaProductionRepository productionRepository) {
         this.movieRepository = movieRepository;
         this.productionRepository = productionRepository;
     }
+
 
     @Override
     public List<Movie> listAll() {
@@ -32,7 +32,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> searchMovies(String text) {
-        return movieRepository.searchMovies(text);
+        return movieRepository.findByTitleContainingOrSummaryContaining(text, text);
     }
 
     @Override
@@ -50,16 +50,26 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Optional<Movie> findById(Long id) {
-        Optional<Movie> movie = movieRepository.findById(id);
-
-        return movie;
+        return movieRepository.findById(id);
     }
 
     @Override
     public Optional<Movie> save(String title, String summary, Double rating, Long productionId, Long movieId) {
-        Production production = productionRepository.findById(productionId)
-                .orElseThrow(() -> new ProductionNotFoundException(productionId));
-        return movieRepository.save(title, summary, rating, production, movieId);
+        Movie movie = movieRepository.findById(movieId).orElse(new Movie());
+        movie.setTitle(title);
+        movie.setSummary(summary);
+        movie.setRating(rating);
+        movie.setProduction(productionRepository.findById(productionId).get());
+        movieRepository.save(movie);
+        return Optional.of(movie);
+    }
+
+    @Override
+    public Optional<Movie> saveMovieWithRepository(Movie movie, Long productionId) {
+        Production production = productionRepository.findById(productionId).orElse(null);
+        movie.setProduction(production);
+        movieRepository.save(movie);
+        return Optional.of(movie);
     }
 
     @Override
@@ -69,6 +79,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void findMovieAndSetNewRating(String title, Double rating) {
-        movieRepository.setRatingForMovie(title, rating);
+        //TODO
+//        movieRepository.setRatingForMovie(title, rating);
     }
 }

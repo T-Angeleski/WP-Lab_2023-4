@@ -25,21 +25,21 @@ public class TicketOrderController {
         this.movieService = movieService;
     }
 
-    @PostMapping
-    public String showTicketOrder(@RequestParam String selectedMovie,
-                                  @RequestParam String numTickets,
-                                  HttpServletRequest req,
-                                  Model model) {
-        TicketOrder order = ticketOrderService.placeOrder(selectedMovie,
-                "Teodor Angeleski",
-                req.getRemoteAddr(),
-                Long.parseLong(numTickets));
-        List<Movie> orderedMovies = ticketOrderService.findClientOrders("Teodor Angeleski");
-        model.addAttribute("movies", orderedMovies);
-        model.addAttribute("order", order);
-        model.addAttribute("bodyContent", "orderConfirmation");
-        return "master-template";
-    }
+//    @PostMapping
+//    public String showTicketOrder(@RequestParam String selectedMovie,
+//                                  @RequestParam String numTickets,
+//                                  HttpServletRequest req,
+//                                  Model model) {
+//        TicketOrder order = ticketOrderService.placeOrder(selectedMovie,
+//                "Teodor Angeleski",
+//                req.getRemoteAddr(),
+//                Long.parseLong(numTickets));
+//        List<Movie> orderedMovies = ticketOrderService.findClientOrders("Teodor Angeleski");
+//        model.addAttribute("movies", orderedMovies);
+//        model.addAttribute("order", order);
+//        model.addAttribute("bodyContent", "orderConfirmation");
+//        return "master-template";
+//    }
 
     @PostMapping("/editRating")
     public String editMovieRating(@RequestParam String rating,

@@ -36,17 +36,16 @@ public class MovieController {
             model.addAttribute("error", error);
         }
 
-        if (searchText == null && searchRating == null) {
-            model.addAttribute("searchedMovies", new ArrayList<String>());
+        if ((searchText == null || searchText == "") && searchRating == null) {
+            model.addAttribute("movies", movieService.listAll());
         } else if (searchRating == 1.0) {
-            model.addAttribute("searchedMovies", movieService.searchMovies(searchText));
+            model.addAttribute("movies", movieService.searchMovies(searchText));
         } else {
-            model.addAttribute("searchedMovies",
+            model.addAttribute("movies",
                     movieService.searchByTitleAndRating(searchText, searchRating));
         }
 
-        model.addAttribute("movies", movieService.listAll());
-        model.addAttribute("mostPopularMovie", ticketOrderService.findMostPopular());
+//        model.addAttribute("mostPopularMovie", ticketOrderService.findMostPopular());
         model.addAttribute("bodyContent", "listMovies");
         return "master-template";
     }

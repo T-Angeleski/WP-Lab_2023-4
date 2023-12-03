@@ -85,10 +85,6 @@
 
             <hr>
 
-            <h2>Result:</h2>
-            <ul class="list-unstyled" th:each="movie : ${searchedMovies}">
-                <li th:text="${movie.getTitle()} + ' ' + ${movie.getRating()}"></li>
-            </ul>
         </div>
 
         <div class="col-md-6">

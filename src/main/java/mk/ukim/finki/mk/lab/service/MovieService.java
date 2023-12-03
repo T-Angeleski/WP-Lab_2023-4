@@ -17,6 +17,8 @@ public interface MovieService {
 
     Optional<Movie> save(String title, String summary, Double rating, Long productionId, Long movieId);
 
+    Optional<Movie> saveMovieWithRepository(Movie movie, Long productionId);
+
     void deleteById(Long id);
 
     void findMovieAndSetNewRating(String title, Double rating);

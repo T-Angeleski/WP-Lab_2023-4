@@ -1,4 +1,4 @@
-package mk.ukim.finki.mk.lab.repository;
+package mk.ukim.finki.mk.lab.repository.inMemory;
 
 import jakarta.annotation.PostConstruct;
 import mk.ukim.finki.mk.lab.model.Movie;
