@@ -25,13 +25,13 @@ public class TicketOrderRepository {
     }
 
     public TicketOrder save(TicketOrder order) {
-        ticketOrders.removeIf(o -> o.getMovieTitle().equals(order.getMovieTitle()));
+        ticketOrders.removeIf(o -> o.getMovie().getTitle().equals(order.getMovie().getTitle()));
         ticketOrders.add(order);
 
 
-        ticketsByName.computeIfPresent(order.getMovieTitle(),
+        ticketsByName.computeIfPresent(order.getMovie().getTitle(),
                 (k, v) -> v + order.getNumberOfTickets());
-        ticketsByName.putIfAbsent(order.getMovieTitle(), order.getNumberOfTickets());
+        ticketsByName.putIfAbsent(order.getMovie().getTitle(), order.getNumberOfTickets());
 
         // Add ordered movie to client name
 //        String movieTitle = order.getMovieTitle();
@@ -50,7 +50,7 @@ public class TicketOrderRepository {
 
     public Optional<TicketOrder> findByName(String name) {
         return ticketOrders.stream()
-                .filter(t -> t.getMovieTitle().contains(name))
+                .filter(t -> t.getMovie().getTitle().contains(name))
                 .findFirst();
     }
 

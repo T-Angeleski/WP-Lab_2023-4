@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -18,6 +20,9 @@ public class Movie {
 
     @ManyToOne
     private Production production;
+
+    @OneToMany(mappedBy = "movie")
+    private List<TicketOrder> ticketOrders;
 
     public Movie(String title, String summary, double rating, Production production) {
         this.title = title;

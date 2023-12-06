@@ -1,11 +1,12 @@
 package mk.ukim.finki.mk.lab.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,21 +19,23 @@ public class User {
     private Long id;
 
     private String username;
-    private String name;
-    private String surname;
+
+    @Convert(converter = UserFullnameConverter.class)
+    private UserFullname fullname;
+
     private String password;
 
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateOfBirth;
 
-    @OneToMany(mappedBy = "user")
-    private List<ShoppingCart> carts;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ShoppingCart> carts = new ArrayList<>();
 
-    public User(String username, String name, String surname, String password, LocalDate dateOfBirth, List<ShoppingCart> carts) {
+
+    public User(String username, UserFullname fullname, String password, LocalDate dateOfBirth) {
         this.username = username;
-        this.name = name;
-        this.surname = surname;
+        this.fullname = fullname;
         this.password = password;
         this.dateOfBirth = dateOfBirth;
-        this.carts = carts;
     }
 }

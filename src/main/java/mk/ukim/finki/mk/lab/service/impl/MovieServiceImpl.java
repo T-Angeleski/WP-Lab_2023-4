@@ -65,14 +65,6 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Optional<Movie> saveMovieWithRepository(Movie movie, Long productionId) {
-        Production production = productionRepository.findById(productionId).orElse(null);
-        movie.setProduction(production);
-        movieRepository.save(movie);
-        return Optional.of(movie);
-    }
-
-    @Override
     public void deleteById(Long id) {
         movieRepository.deleteById(id);
     }

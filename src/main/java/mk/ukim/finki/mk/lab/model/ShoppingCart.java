@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mk.ukim.finki.mk.lab.model.enumerations.ShoppingCartStatus;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,14 +22,18 @@ public class ShoppingCart {
     @ManyToOne
     private User user;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd' 'HH:mm:ss")
     private LocalDateTime dateCreated;
 
     @OneToMany
-    private List<TicketOrder> ticketOrders;
+    private List<TicketOrder> ticketOrders = new ArrayList<>();
 
-    public ShoppingCart(User user, LocalDateTime dateCreated, List<TicketOrder> ticketOrders) {
+    @Enumerated(EnumType.STRING)
+    private ShoppingCartStatus status;
+
+    public ShoppingCart(User user) {
         this.user = user;
-        this.dateCreated = dateCreated;
-        this.ticketOrders = ticketOrders;
+        this.dateCreated = LocalDateTime.now();
+        this.status = ShoppingCartStatus.CREATED;
     }
 }

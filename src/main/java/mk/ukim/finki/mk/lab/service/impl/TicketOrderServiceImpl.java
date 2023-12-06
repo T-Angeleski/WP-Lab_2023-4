@@ -2,26 +2,29 @@ package mk.ukim.finki.mk.lab.service.impl;
 
 import mk.ukim.finki.mk.lab.model.Movie;
 import mk.ukim.finki.mk.lab.model.TicketOrder;
-import mk.ukim.finki.mk.lab.model.exceptions.MovieNotFoundException;
-import mk.ukim.finki.mk.lab.repository.inMemory.MovieRepository;
+import mk.ukim.finki.mk.lab.model.User;
+import mk.ukim.finki.mk.lab.repository.jpa.JpaMovieRepository;
 import mk.ukim.finki.mk.lab.repository.jpa.JpaTicketOrderRepository;
+import mk.ukim.finki.mk.lab.repository.jpa.JpaUserRepository;
 import mk.ukim.finki.mk.lab.service.TicketOrderService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TicketOrderServiceImpl implements TicketOrderService {
 
     private final JpaTicketOrderRepository ticketOrderRepository;
-    private final MovieRepository movieRepository;
+    private final JpaMovieRepository movieRepository;
+    private final JpaUserRepository userRepository;
 
-    public TicketOrderServiceImpl(JpaTicketOrderRepository ticketOrderRepository, MovieRepository movieRepository) {
+    public TicketOrderServiceImpl(JpaTicketOrderRepository ticketOrderRepository,
+                                  JpaMovieRepository movieRepository,
+                                  JpaUserRepository userRepository) {
         this.ticketOrderRepository = ticketOrderRepository;
         this.movieRepository = movieRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -40,8 +43,24 @@ public class TicketOrderServiceImpl implements TicketOrderService {
 //    }
 
     @Override
+    public TicketOrder placeOrder(User user, Movie movie, Long numTickets, LocalDateTime timeCreated) {
+        TicketOrder order = new TicketOrder(numTickets, movie, user, timeCreated);
+        return ticketOrderRepository.save(order);
+    }
+
+    @Override
     public List<TicketOrder> findAll() {
         return ticketOrderRepository.findAll();
+    }
+
+    @Override
+    public List<TicketOrder> findAllByUserId(Long userId) {
+        return ticketOrderRepository.findAllByUserId(userId);
+    }
+
+    @Override
+    public List<TicketOrder> findOrdersInTimeInterval(LocalDateTime from, LocalDateTime to) {
+        return ticketOrderRepository.findAllByDateCreatedBetween(from, to);
     }
 
 //    @Override
